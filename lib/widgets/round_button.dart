@@ -13,17 +13,17 @@ class RoundButton extends StatelessWidget {
   final double minimumHeight;
 
   const RoundButton({
-    Key? key,
+    Key key,
     this.text = "",
     this.fortSize = 20,
-    required this.color,
-    required this.disabledColor,
+    this.color,
+    this.disabledColor,
     this.padding = const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-    required this.onPressed,
+    this.onPressed,
     this.isCircle = false,
     this.minimumWidth = 0,
     this.minimumHeight = 0,
-    required this.child,
+    this.child,
   }) : super(key: key);
 
   @override

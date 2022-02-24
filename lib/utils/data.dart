@@ -57,8 +57,9 @@ List roomData = List.generate(
     (index) => {
           'title':
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit? ❤🏠🏠',
-          "users": List.generate(20, (index) => User.fromJson(userData[index]))
-            ..shuffle(),
+          "users":
+              List.generate(20, (index) => MyUser.fromJson(userData[index]))
+                ..shuffle(),
           "speakerCount": 4,
         });
 
@@ -85,5 +86,6 @@ List lobbyBottomSheets = [
   },
 ];
 
-List<User> users = List.generate(20, (index) => User.fromJson(userData[index]));
-User myProfile = User.fromJson(profileData);
+List<MyUser> users =
+    List.generate(20, (index) => MyUser.fromJson(userData[index]));
+MyUser myProfile = MyUser.fromJson(profileData);

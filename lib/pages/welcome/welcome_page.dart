@@ -5,7 +5,7 @@ import '../../utils/history.dart';
 import 'phone_number_page.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({Key? key}) : super(key: key);
+  const WelcomePage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class WelcomePage extends StatelessWidget {
       children: [
         ElevatedButton(
           onPressed: () {
-            History.pushPage(context, PhoneNumberPage());
+            History.pushPage(context, LoginPageWidget());
           },
           style: ElevatedButton.styleFrom(
             elevation: 0,

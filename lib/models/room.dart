@@ -1,11 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'User.dart';
 
 class Room {
-  final String? title;
-  final List<User>? users;
+  final String title;
+  final List<MyUser> users;
   final int speakerCount;
 
-  Room({this.title, this.users, required this.speakerCount});
+  Room({this.title, this.users, this.speakerCount});
 
   factory Room.fromJson(json) {
     return Room(

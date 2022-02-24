@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../utils/history.dart';
 
 class UsernamePage extends StatefulWidget {
-  const UsernamePage({Key? key}) : super(key: key);
+  const UsernamePage({Key key}) : super(key: key);
 
   @override
   _UsernamePageState createState() => _UsernamePageState();
@@ -60,7 +60,7 @@ class _UsernamePageState extends State<UsernamePage> {
         child: TextFormField(
           textAlign: TextAlign.center,
           validator: (value) {
-            if (value!.isNotEmpty) {
+            if (value.isNotEmpty) {
               if (_userNameController.text.isNotEmpty) {
                 next();
               }
@@ -100,7 +100,7 @@ class _UsernamePageState extends State<UsernamePage> {
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: ElevatedButton(
         onPressed: () {
-          if (_userNameformKey.currentState!.validate()) {
+          if (_userNameformKey.currentState.validate()) {
             //! save username and perform login session operations
 
           }
@@ -132,6 +132,6 @@ class _UsernamePageState extends State<UsernamePage> {
   }
 
   next() {
-    History.pushPageUntil(context, HomePage());
+    // History.pushPageUntil(context, HomePage());
   }
 }

@@ -13,7 +13,7 @@ import 'widgets/room_Profile.dart';
 class RoomPage extends StatelessWidget {
   final Room room;
 
-  const RoomPage({Key? key, required this.room}) : super(key: key);
+  const RoomPage({Key key, this.room}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +40,12 @@ class RoomPage extends StatelessWidget {
             const Spacer(),
             GestureDetector(
               onTap: () {
-                History.pushPage(
-                  context,
-                  ProfilePage(
-                    profile: myProfile,
-                  ),
-                );
+                // History.pushPage(
+                //   context,
+                //   ProfilePage(
+                //     profile: myProfile,
+                //   ),
+                // );
               },
               child: RoundImage(
                 path: myProfile.profileImage,
@@ -81,8 +81,8 @@ class RoomPage extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  buildSpeakers(room.users!.sublist(0, room.speakerCount)),
-                  buildOthers(room.users!.sublist(room.speakerCount)),
+                  buildSpeakers(room.users.sublist(0, room.speakerCount)),
+                  buildOthers(room.users.sublist(room.speakerCount)),
                 ],
               ),
             ),
@@ -119,7 +119,7 @@ class RoomPage extends StatelessWidget {
     );
   }
 
-  Widget buildSpeakers(List<User> users) {
+  Widget buildSpeakers(List<MyUser> users) {
     return GridView.builder(
       shrinkWrap: true,
       physics: const ScrollPhysics(),
@@ -139,7 +139,7 @@ class RoomPage extends StatelessWidget {
     );
   }
 
-  Widget buildOthers(List<User> users) {
+  Widget buildOthers(List<MyUser> users) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

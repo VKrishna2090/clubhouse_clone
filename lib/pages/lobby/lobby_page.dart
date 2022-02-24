@@ -3,8 +3,10 @@ import 'package:clubhouse_clone/pages/room/room_page.dart';
 import 'package:clubhouse_clone/utils/data.dart';
 import 'package:clubhouse_clone/utils/style.dart';
 import 'package:clubhouse_clone/widgets/round_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'widgets/lobby_bottom_sheet.dart';
@@ -12,6 +14,14 @@ import 'widgets/room_Card.dart';
 import 'widgets/schedule_Card.dart';
 
 class LobbyPage extends StatefulWidget {
+  GoogleSignIn _googleSignIn;
+  User _user;
+
+  LobbyPage(User user, GoogleSignIn signIn, {Key key}) : super(key: key) {
+    _user = user;
+    _googleSignIn = signIn;
+  }
+
   @override
   _LobbyPageState createState() => _LobbyPageState();
 }
@@ -166,7 +176,7 @@ class _LobbyPageState extends State<LobbyPage> {
 
                 enterRoom(
                   Room(
-                    title: '${myProfile.name}\'s Room',
+                    title: '${widget._user.displayName}\'s Room',
                     users: [myProfile],
                     speakerCount: 1,
                   ),

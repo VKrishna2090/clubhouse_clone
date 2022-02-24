@@ -4,7 +4,7 @@ import '../../utils/history.dart';
 import 'username_page.dart';
 
 class FullNamePage extends StatefulWidget {
-  const FullNamePage({Key? key}) : super(key: key);
+  const FullNamePage({Key key}) : super(key: key);
 
   @override
   _FullNamePageState createState() => _FullNamePageState();
@@ -62,7 +62,7 @@ class _FullNamePageState extends State<FullNamePage> {
               child: TextFormField(
                 textAlign: TextAlign.center,
                 validator: (value) {
-                  if (value!.isNotEmpty) {
+                  if (value.isNotEmpty) {
                     if (_lastNameController.text.isNotEmpty) {
                       next();
                     }
@@ -113,7 +113,7 @@ class _FullNamePageState extends State<FullNamePage> {
               child: TextFormField(
                 textAlign: TextAlign.center,
                 validator: (value) {
-                  if (value!.isNotEmpty) {
+                  if (value.isNotEmpty) {
                     if (_firstNameController.text.isNotEmpty) {
                       next();
                     }
@@ -157,8 +157,8 @@ class _FullNamePageState extends State<FullNamePage> {
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: ElevatedButton(
         onPressed: () => {
-          if (_firstNameFormKey.currentState!.validate() &&
-              _lastNameFormKey.currentState!.validate())
+          if (_firstNameFormKey.currentState.validate() &&
+              _lastNameFormKey.currentState.validate())
             {}
         },
         style: ElevatedButton.styleFrom(

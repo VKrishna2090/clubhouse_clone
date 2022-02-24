@@ -4,12 +4,12 @@ import 'package:clubhouse_clone/widgets/round_image.dart';
 import 'package:flutter/material.dart';
 
 class FollowerItem extends StatelessWidget {
-  final User? user;
-  final VoidCallback? onProfileTap;
+  final MyUser user;
+  final VoidCallback onProfileTap;
   final VoidCallback onRoomButtonTap;
 
   const FollowerItem(
-      {Key? key, this.user, this.onProfileTap, required this.onRoomButtonTap})
+      {Key key, this.user, this.onProfileTap, this.onRoomButtonTap})
       : super(key: key);
 
   @override
@@ -19,7 +19,7 @@ class FollowerItem extends StatelessWidget {
         GestureDetector(
           onTap: onProfileTap,
           child: RoundImage(
-            path: user!.profileImage,
+            path: user.profileImage,
             borderRadius: 15,
           ),
         ),
@@ -31,13 +31,13 @@ class FollowerItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                user!.name.toString(),
+                user.name.toString(),
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                '${user!.lastAccessTime}',
+                '${user.lastAccessTime}',
                 style: const TextStyle(
                   color: Color(0xff918E81),
                 ),

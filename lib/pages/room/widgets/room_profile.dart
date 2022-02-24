@@ -6,15 +6,15 @@ import 'package:clubhouse_clone/widgets/round_image.dart';
 import 'package:flutter/material.dart';
 
 class RoomProfile extends StatelessWidget {
-  final User user;
+  final MyUser user;
   final double size;
   final bool isMute;
   final bool isModerator;
 
   const RoomProfile(
-      {Key? key,
-      required this.user,
-      required this.size,
+      {Key key,
+      this.user,
+      this.size,
       this.isMute = false,
       this.isModerator = false})
       : super(key: key);
@@ -27,11 +27,11 @@ class RoomProfile extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                History.pushPage(
-                    context,
-                    ProfilePage(
-                      profile: user,
-                    ));
+                // History.pushPage(
+                //     context,
+                //     ProfilePage(
+                //       user,
+                //     ));
               },
               child: RoundImage(
                 path: user.profileImage,
@@ -51,7 +51,7 @@ class RoomProfile extends StatelessWidget {
           children: [
             buildModeratorBadge(isModerator),
             Text(
-              user.name!.split(' ')[0],
+              user.name.split(' ')[0],
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               style: const TextStyle(

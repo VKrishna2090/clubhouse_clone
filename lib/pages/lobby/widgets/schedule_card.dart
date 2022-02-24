@@ -3,7 +3,7 @@ import 'package:clubhouse_clone/utils/style.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleCard extends StatelessWidget {
-  const ScheduleCard({Key? key}) : super(key: key);
+  const ScheduleCard({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,8 @@ class ScheduleCard extends StatelessWidget {
           for (var i = 0, len = 2; i < len; i++)
             Padding(
               padding: const EdgeInsets.all(8),
-              child: buildScheduleItem("0${6 + i}:00 PM", dummyText),
+              child: buildScheduleItem("0${6 + i}:00 PM",
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit? ❤🏠🏠"),
             )
         ],
       ),

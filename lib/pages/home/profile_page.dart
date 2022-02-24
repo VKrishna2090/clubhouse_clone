@@ -1,12 +1,18 @@
-import 'package:clubhouse_clone/models/User.dart';
+import 'package:clubhouse_clone/pages/welcome/phone_number_page.dart';
 import 'package:clubhouse_clone/utils/data.dart';
-import 'package:clubhouse_clone/widgets/round_image.dart';
+import 'package:clubhouse_clone/utils/history.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class ProfilePage extends StatelessWidget {
-  final User profile;
+  GoogleSignIn _googleSignIn;
+  User _user;
 
-  const ProfilePage({Key? key, required this.profile}) : super(key: key);
+  ProfilePage(User user, GoogleSignIn signIn) {
+    _user = user;
+    _googleSignIn = signIn;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +31,7 @@ class ProfilePage extends StatelessWidget {
         ),
         child: Column(
           children: [
-            buildProfile(),
+            buildProfile(context),
             const SizedBox(
               height: 20,
             ),
@@ -35,21 +41,18 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget buildProfile() {
+  Widget buildProfile(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RoundImage(
-          path: profile.profileImage,
-          width: 100,
-          height: 100,
-          borderRadius: 35,
-        ),
+        ClipOval(
+            child: Image.network(_user.photoURL,
+                width: 30, height: 30, fit: BoxFit.cover)),
         const SizedBox(
           height: 20,
         ),
         Text(
-          profile.name.toString(),
+          _user.displayName,
           style: const TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.bold,
@@ -59,7 +62,7 @@ class ProfilePage extends StatelessWidget {
           height: 5,
         ),
         Text(
-          profile.username.toString(),
+          _user.email,
           style: const TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.bold,
@@ -71,18 +74,18 @@ class ProfilePage extends StatelessWidget {
         Row(
           children: [
             RichText(
-              text: TextSpan(
+              text: const TextSpan(
                 children: <TextSpan>[
                   TextSpan(
-                    text: profile.followers,
-                    style: const TextStyle(
+                    text: "10",
+                    style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const TextSpan(text: ' followers'),
+                  TextSpan(text: ' followers'),
                 ],
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.black,
                 ),
               ),
@@ -91,18 +94,18 @@ class ProfilePage extends StatelessWidget {
               width: 50,
             ),
             RichText(
-              text: TextSpan(
+              text: const TextSpan(
                 children: <TextSpan>[
                   TextSpan(
-                    text: profile.following,
-                    style: const TextStyle(
+                    text: "200",
+                    style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const TextSpan(text: ' following'),
+                  TextSpan(text: ' following'),
                 ],
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.black,
                 ),
               ),
@@ -112,9 +115,27 @@ class ProfilePage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Text(
-            dummyText,
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit? ❤🏠🏠",
             style: const TextStyle(
               fontSize: 15,
+            ),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            _googleSignIn.signOut();
+            History.pushPageUntil(context, LoginPageWidget());
+          },
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const <Widget>[
+                Icon(Icons.exit_to_app, color: Colors.white),
+                SizedBox(width: 10),
+                Text('Sign out', style: TextStyle(color: Colors.white))
+              ],
             ),
           ),
         ),

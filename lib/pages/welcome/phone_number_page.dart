@@ -1,50 +1,156 @@
-import 'package:clubhouse_clone/pages/welcome/otp_page.dart';
+import 'package:clubhouse_clone/pages/home/home_page.dart';
+import 'package:clubhouse_clone/utils/history.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../utils/history.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-import 'fullname_page.dart';
-
-class PhoneNumberPage extends StatefulWidget {
-  const PhoneNumberPage({Key? key}) : super(key: key);
-
+class LoginPageWidget extends StatefulWidget {
   @override
-  _PhoneNumberPageState createState() => _PhoneNumberPageState();
+  LoginPageWidgetState createState() => LoginPageWidgetState();
 }
 
-class _PhoneNumberPageState extends State<PhoneNumberPage> {
+class LoginPageWidgetState extends State<LoginPageWidget> {
   final _phoneNumberController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  GoogleSignIn _googleSignIn = GoogleSignIn();
+  FirebaseAuth _auth;
+
+  bool isUserSignedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    initApp();
+  }
+
+  void initApp() async {
+    FirebaseApp defaultApp = await Firebase.initializeApp();
+    _auth = FirebaseAuth.instanceFor(app: defaultApp);
+    checkIfUserIsSignedIn();
+  }
+
+  void checkIfUserIsSignedIn() async {
+    var userSignedIn = await _googleSignIn.isSignedIn();
+
+    setState(() {
+      isUserSignedIn = userSignedIn;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: Container(
         alignment: Alignment.center,
-        padding: const EdgeInsets.only(
-          top: 30,
-          bottom: 60,
-        ),
+        padding: EdgeInsets.all(20),
         child: Column(
           children: [
+            const SizedBox(
+              height: 130,
+            ),
             const Text(
-              'Sign in with your phone #',
+              'Sign in #',
               style: TextStyle(
                 fontSize: 25,
               ),
             ),
             const SizedBox(
-              height: 130,
+              height: 80,
             ),
-            buildForm(),
-            const Spacer(),
-            buildBottom(),
+            isUserSignedIn
+                ? const SizedBox(
+                    height: 30,
+                  )
+                : buildForm(),
+            const SizedBox(
+              height: 100,
+            ),
+            isUserSignedIn
+                ? const SizedBox(
+                    height: 30,
+                  )
+                : buildBottom(),
+            const SizedBox(
+              height: 30,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: ElevatedButton(
+                onPressed: () {
+                  onGoogleSignIn(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  primary: isUserSignedIn
+                      ? Colors.green
+                      : Colors.deepPurpleAccent[100],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(Icons.account_circle, color: Colors.white),
+                      SizedBox(width: 10),
+                      Text(
+                        isUserSignedIn
+                            ? 'Logged in with Google'
+                            : 'Login with Google',
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  Future<User> _handleSignIn() async {
+    User user;
+    bool userSignedIn = await _googleSignIn.isSignedIn();
+
+    setState(() {
+      isUserSignedIn = userSignedIn;
+    });
+
+    if (isUserSignedIn) {
+      user = _auth.currentUser;
+    } else {
+      final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      user = (await _auth.signInWithCredential(credential)).user;
+      userSignedIn = await _googleSignIn.isSignedIn();
+      setState(() {
+        isUserSignedIn = userSignedIn;
+      });
+    }
+
+    return user;
+  }
+
+  void onGoogleSignIn(BuildContext context) async {
+    User user = await _handleSignIn();
+    History.pushPageUntil(context, HomePage(user, _googleSignIn));
   }
 
   Widget buildForm() {
@@ -68,7 +174,7 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
               key: _formKey,
               child: TextFormField(
                 validator: (value) {
-                  if (value!.isNotEmpty) {
+                  if (value.isNotEmpty) {
                     if (value.length < 10 || value.length > 10) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -76,7 +182,7 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                       );
                     } else {
                       if (_phoneNumberController.text.isNotEmpty) {
-                        next();
+                        // next();
                       }
                     }
                   } else {
@@ -122,7 +228,7 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Text(
-            'By entering your number, you\'re agreeing to our Terms or Services and Privacy Policy. Thanks!',
+            'By logging in, you\'re agreeing to our Terms or Services and Privacy Policy. Thanks!',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.grey,
@@ -136,10 +242,7 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
           padding: const EdgeInsets.symmetric(horizontal: 25),
           child: ElevatedButton(
             onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                //! sign in/sign up operations
-
-              }
+              if (_formKey.currentState.validate()) {}
             },
             style: ElevatedButton.styleFrom(
               elevation: 0,
@@ -154,9 +257,9 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   Text(
-                    "Next ",
+                    "Send OTP ",
                     style: TextStyle(
-                      fontSize: 25,
+                      fontSize: 20,
                     ),
                   ),
                   Icon(CupertinoIcons.arrow_right, color: Colors.white),
@@ -167,9 +270,5 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
         ),
       ],
     );
-  }
-
-  next() {
-    History.pushPageUntil(context, OtpPage());
   }
 }

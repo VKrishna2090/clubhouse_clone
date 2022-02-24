@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class RoundImage extends StatelessWidget {
-  final String? url;
-  final String? path;
+  final String url;
+  final String path;
   final double width;
   final double height;
-  final EdgeInsets? margin;
+  final EdgeInsets margin;
   final double borderRadius;
 
   const RoundImage({
-    Key? key,
+    Key key,
     this.url,
     this.path = "",
     this.width = 40,
@@ -27,9 +27,9 @@ class RoundImage extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadius),
           image: DecorationImage(
-            image: path!.isNotEmpty
-                ? AssetImage(path!) as ImageProvider
-                : NetworkImage(url!),
+            image: path.isNotEmpty
+                ? AssetImage(path) as ImageProvider
+                : NetworkImage(url),
             fit: BoxFit.cover,
           )),
     );

@@ -7,8 +7,7 @@ import 'package:flutter/material.dart';
 class LobbyBottomSheet extends StatefulWidget {
   final VoidCallback onButtonTap;
 
-  const LobbyBottomSheet({Key? key, required this.onButtonTap})
-      : super(key: key);
+  const LobbyBottomSheet({Key key, this.onButtonTap}) : super(key: key);
 
   @override
   _LobbyBottomSheetState createState() => _LobbyBottomSheetState();

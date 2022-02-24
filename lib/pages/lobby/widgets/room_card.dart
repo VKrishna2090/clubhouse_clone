@@ -3,9 +3,9 @@ import 'package:clubhouse_clone/widgets/round_image.dart';
 import 'package:flutter/material.dart';
 
 class RoomCard extends StatelessWidget {
-  final Room? room;
+  final Room room;
 
-  const RoomCard({Key? key, this.room}) : super(key: key);
+  const RoomCard({Key key, this.room}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class RoomCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            room!.title.toString(),
+            room.title.toString(),
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
@@ -64,17 +64,17 @@ class RoomCard extends StatelessWidget {
       children: [
         RoundImage(
           margin: const EdgeInsets.only(top: 15, left: 25),
-          path: room!.users![1].profileImage,
+          path: room.users[1].profileImage,
         ),
         RoundImage(
-          path: room!.users![0].profileImage,
+          path: room.users[0].profileImage,
         ),
       ],
     );
   }
 
   Widget buildUserList() {
-    var len = room!.users!.length > 4 ? 4 : room!.users!.length;
+    var len = room.users.length > 4 ? 4 : room.users.length;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,7 +83,7 @@ class RoomCard extends StatelessWidget {
           Row(
             children: [
               Text(
-                room!.users![i].name.toString(),
+                room.users[i].name.toString(),
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
@@ -107,7 +107,7 @@ class RoomCard extends StatelessWidget {
     return Row(
       children: [
         Text(
-          '${room!.users!.length}',
+          '${room.users.length}',
           style: const TextStyle(
             color: Colors.grey,
           ),
@@ -125,7 +125,7 @@ class RoomCard extends StatelessWidget {
           ),
         ),
         Text(
-          '${room!.speakerCount}',
+          '${room.speakerCount}',
           style: const TextStyle(
             color: Colors.grey,
           ),
