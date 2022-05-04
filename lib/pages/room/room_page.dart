@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:clubhouse_clone/models/User.dart';
 import 'package:clubhouse_clone/models/room.dart';
 import 'package:clubhouse_clone/pages/home/profile_page.dart';
@@ -180,6 +181,8 @@ class RoomPage extends StatelessWidget {
         children: [
           RoundButton(
             onPressed: () {
+              var db = FirebaseFirestore.instance;
+              db.collection('rooms').doc("rooms").delete();
               Navigator.pop(context);
             },
             color: Style.LightGrey,

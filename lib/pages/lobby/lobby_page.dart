@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:clubhouse_clone/models/room.dart';
 import 'package:clubhouse_clone/pages/room/room_page.dart';
 import 'package:clubhouse_clone/utils/data.dart';
@@ -127,6 +128,15 @@ class _LobbyPageState extends State<LobbyPage> {
           const Spacer(),
           RoundButton(
             onPressed: () {
+              var room = <String, String>{
+                "id": "1",
+                "title": '${widget._user.displayName}\'s Room',
+                "moderator": widget._user.uid,
+                "speakerCount": "1",
+                "userCount": "1"
+              };
+              var db = FirebaseFirestore.instance;
+              db.collection('rooms').doc("rooms").set(room);
               showBottomSheet();
             },
             color: Style.AccentGreen,
