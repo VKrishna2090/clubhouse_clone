@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class RoomProfile extends StatelessWidget {
+class OthersInTheRoomProfile extends StatelessWidget {
   MyUser user;
   double size;
   bool isMute;
@@ -15,8 +15,8 @@ class RoomProfile extends StatelessWidget {
   GoogleSignIn _googleSignIn;
   User _user;
 
-  RoomProfile(MyUser myuser1, double size1, bool isMute1, bool isModerator1,
-      GoogleSignIn signIn1, User user1,
+  OthersInTheRoomProfile(MyUser myuser1, double size1, bool isMute1,
+      bool isModerator1, GoogleSignIn signIn1, User user1,
       {Key key})
       : super(key: key) {
     user = myuser1;
@@ -41,9 +41,11 @@ class RoomProfile extends StatelessWidget {
                 //       user,
                 //     ));
               },
-              child: ClipOval(
-                  child: Image.network(_user.photoURL,
-                      width: 60, height: 60, fit: BoxFit.cover)),
+              child: RoundImage(
+                path: user.profileImage,
+                width: size,
+                height: size,
+              ),
             ),
             buildNewBadge(user.isNewUser),
             buildMuteBadge(isMute),
@@ -56,14 +58,12 @@ class RoomProfile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             buildModeratorBadge(isModerator),
-            Flexible(
-              child: Text(
-                _user.displayName,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+            Text(
+              user.name.split(' ')[0],
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
               ),
             ),
           ],

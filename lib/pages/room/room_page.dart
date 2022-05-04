@@ -2,19 +2,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:clubhouse_clone/models/User.dart';
 import 'package:clubhouse_clone/models/room.dart';
 import 'package:clubhouse_clone/pages/home/profile_page.dart';
+import 'package:clubhouse_clone/pages/room/widgets/others_in_the_room_profile.dart';
+import 'package:clubhouse_clone/pages/room/widgets/room_profile.dart';
 import 'package:clubhouse_clone/utils/data.dart';
 import 'package:clubhouse_clone/utils/history.dart';
 import 'package:clubhouse_clone/utils/style.dart';
 import 'package:clubhouse_clone/widgets/round_button.dart';
 import 'package:clubhouse_clone/widgets/round_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import 'widgets/room_Profile.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class RoomPage extends StatelessWidget {
-  final Room room;
+  Room room;
+  GoogleSignIn _googleSignIn;
+  User _user;
 
-  const RoomPage({Key key, this.room}) : super(key: key);
+  RoomPage(User user, GoogleSignIn signIn, Room r1, {Key key})
+      : super(key: key) {
+    room = r1;
+    _user = user;
+    _googleSignIn = signIn;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,11 +57,9 @@ class RoomPage extends StatelessWidget {
                 //   ),
                 // );
               },
-              child: RoundImage(
-                path: myProfile.profileImage,
-                width: 40,
-                height: 40,
-              ),
+              child: ClipOval(
+                  child: Image.network(_user.photoURL,
+                      width: 30, height: 30, fit: BoxFit.cover)),
             ),
           ],
         ),
@@ -82,8 +89,11 @@ class RoomPage extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  buildSpeakers(room.users.sublist(0, room.speakerCount)),
-                  buildOthers(room.users.sublist(room.speakerCount)),
+                  room.speakerCount > 1
+                      ? buildAllSpeakers(
+                          room.users.sublist(0, room.speakerCount))
+                      : buildSpeakers(room.users.sublist(0, 1)),
+                  buildOthers(room.users.sublist(1, room.users.length)),
                 ],
               ),
             ),
@@ -120,6 +130,28 @@ class RoomPage extends StatelessWidget {
     );
   }
 
+  Widget buildAllSpeakers(List<MyUser> users) {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const ScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        mainAxisExtent: 150,
+      ),
+      itemCount: users.length,
+      itemBuilder: (gc, index) {
+        return OthersInTheRoomProfile(
+          users[index],
+          80,
+          index == 3,
+          index == 0,
+          _googleSignIn,
+          _user,
+        );
+      },
+    );
+  }
+
   Widget buildSpeakers(List<MyUser> users) {
     return GridView.builder(
       shrinkWrap: true,
@@ -131,10 +163,12 @@ class RoomPage extends StatelessWidget {
       itemCount: users.length,
       itemBuilder: (gc, index) {
         return RoomProfile(
-          user: users[index],
-          isModerator: index == 0,
-          isMute: index == 3,
-          size: 80,
+          users[index],
+          80,
+          index == 3,
+          index == 0,
+          _googleSignIn,
+          _user,
         );
       },
     );
@@ -164,10 +198,8 @@ class RoomPage extends StatelessWidget {
           ),
           itemCount: users.length,
           itemBuilder: (gc, index) {
-            return RoomProfile(
-              user: users[index],
-              size: 60,
-            );
+            return OthersInTheRoomProfile(
+                users[index], 60, index == 3, index == 0, _googleSignIn, _user);
           },
         ),
       ],

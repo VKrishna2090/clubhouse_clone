@@ -128,12 +128,13 @@ class _LobbyPageState extends State<LobbyPage> {
           const Spacer(),
           RoundButton(
             onPressed: () {
-              var room = <String, String>{
+              var room = {
                 "id": "1",
                 "title": '${widget._user.displayName}\'s Room',
                 "moderator": widget._user.uid,
-                "speakerCount": "1",
-                "userCount": "1"
+                "speakerCount": 1,
+                "users": [widget._user.uid],
+                "userCount": 1
               };
               var db = FirebaseFirestore.instance;
               db.collection('rooms').doc("rooms").set(room);
@@ -163,7 +164,9 @@ class _LobbyPageState extends State<LobbyPage> {
       context: context,
       builder: (rc) {
         return RoomPage(
-          room: room,
+          widget._user,
+          widget._googleSignIn,
+          room,
         );
       },
     );

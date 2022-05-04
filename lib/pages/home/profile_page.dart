@@ -46,8 +46,13 @@ class ProfilePage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ClipOval(
-            child: Image.network(_user.photoURL,
-                width: 30, height: 30, fit: BoxFit.cover)),
+          child: Image.network(
+            _user.photoURL,
+            width: 70,
+            height: 70,
+            fit: BoxFit.cover,
+          ),
+        ),
         const SizedBox(
           height: 20,
         ),

@@ -1,3 +1,4 @@
+import 'package:clubhouse_clone/pages/home/follower_page.dart';
 import 'package:clubhouse_clone/pages/home/widgets/home_app_bar.dart';
 import 'package:clubhouse_clone/pages/lobby/lobby_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,6 +26,7 @@ class HomePage extends StatelessWidget {
       body: PageView(
         children: [
           LobbyPage(_user, _googleSignIn),
+          FollowerPage(_user, _googleSignIn),
         ],
       ),
     );

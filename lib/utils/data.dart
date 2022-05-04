@@ -3,6 +3,9 @@ import 'dart:math';
 import 'package:clubhouse_clone/models/User.dart';
 import 'package:clubhouse_clone/models/room.dart';
 
+import 'package:random_string/random_string.dart';
+import 'dart:math' show Random;
+
 Random random = Random();
 String dummyText =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit? ❤🏠🏠';
@@ -33,6 +36,7 @@ List names = [
 List userData = List.generate(
     20,
     (index) => {
+          "uid": randomAlphaNumeric(10),
           "name": names[index],
           "username": "@${names[index].toString().split('')[0].toLowerCase()}",
           "profileImage": "assets/images/cat${index % 10 + 1}.jpg",
